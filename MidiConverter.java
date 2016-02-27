@@ -1,3 +1,9 @@
+/*Couldn't figure out how Sequence works...need to look into that more.
+ * This converts a bit string into an array of notes that you can play,
+ * but it doesn't deal with "rest" or "sustain" yet. 
+ * (Probably need to change it so that it uses noteOn and NoteOff) 
+ * But it plays a bit string song, so that's fun =) */
+
 import java.util.ArrayList;
 
 public class MidiConverter {
