@@ -1,0 +1,54 @@
+
+This file is a work in progress to sort of hammer out the format for the binary data.  That is,
+how do we take the data given by the genetic algorithm and interpret it as music?
+
+
+
+===============================================================
+
+Music data will be a 4-measure block of music (16 beats).  This block will be broken into 32
+"segments".  Each segment will consist of 6 bits of data:
+
+ 2 bits:  Command ID:
+        00 = Sustain
+        01 = Sustain
+        10 = Rest
+        11 = New Note
+        
+ 4 bits:  Tone to play.  This data is used only if the command ID is 11 (New note).
+        Otherwise it is ignored.
+        
+        0000 = 'Do' (note 1 in scale) octave 0
+        0001 = 'Re' (note 2 in scale) octave 0
+        0010 = 'Mi'
+        0011 = 'Fa'
+        0100 = 'So'
+        0101 = 'La'
+        0110 = 'Ti'
+        0111 = 'Do' octave 1
+        1000 = 'Re' octave 1
+        1001 = 'Mi'
+        1010 = 'Fa'
+        1011 = 'So'
+        1100 = 'La'
+        1101 = 'Ti'
+        1110 = 'Do' octave 2
+        1111 = Sustain????
+        
+        
+All segments conceptually represent a 1/16th note, with longer notes being formed by 'Sustain'
+commands.  Example, a quarter note would be a single 'New Note' command followed by 3 'Sustain'
+commands.
+
+If the first Command in the sequence is a sustain, treat it as a 'New Note' for Octave 1 'Do'.
+
+
+=============================================================================
+
+Each segment is 6 bits wide, and there are 32 segments, which means we'd need 192 bits of data.
+
+
+
+We might want to have a header as well to select a key.  We could do everything in C major, but it might
+be a nice twist to have a mutation which changes the key.
+
