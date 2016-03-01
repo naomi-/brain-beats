@@ -14,25 +14,21 @@ public class MidiConverter {
       MidiBuilder builder = new MidiBuilder();
       int midi = 0;
       ArrayList<Integer> notes = new ArrayList<Integer>();
-      int i=0;
-      int j=0;
+      int i=0; //Counter for iterating through the binary string, six bits at a time
+      int j=0; //Counter for the notes array
+      boolean isNoteOn=false;
+      
       while(i<binaryString.length()){
         int command = Integer.parseInt(binaryString.substring(i, i+2));
         System.out.println(command);
         if(command==00 || command==01){
-          //Check if there is a previous note
-          if(j!=0){
-            //Sustain the previous note (just don't turn off the last note)
-            midi = notes.get(j-1);
-            builder.noteOn(midi, j*4);
-          }else{
-            //Play a rest (turn the note off, and don't turn it back on)
-            builder.noteOff(notes.get(j-1), (j-1)*4);
-          }
+          //Sustain (don't do anything)
         }else if(command==10){
-          //Play a rest (turn the note off, and don't turn it back on)
-          builder.noteOff(notes.get(j-1), (j-1)*4);
-          
+          if(isNoteOn){
+            //Play a rest (turn the note off, and don't turn it back on)
+            builder.noteOff(notes.get(j-1), j);
+            isNoteOn=false;
+          }
         }else if(command==11){
           //Play new note
           String note = binaryString.substring(i+2, i+6);
@@ -55,13 +51,29 @@ public class MidiConverter {
             break;
             case "0111": midi = 72;
             break;
+            case "1000": midi = 74;
+            break;
+            case "1001": midi = 76;
+            break;
+            case "1010": midi = 77;
+            break;
+            case "1011": midi = 79;
+            break;
+            case "1100": midi = 81;
+            break;
+            case "1101": midi = 83;
+            break;
+            case "1110": midi = 84;
+            break;
+            case "1111": midi = 86;
           }
           //turn last note off
           if(j!=0){
-            builder.noteOff(notes.get(j-1), (j-1)*4);
+            builder.noteOff(notes.get(j-1), j);
           }
           //turn new note on
-          builder.noteOn(midi, j*4);
+          builder.noteOn(midi, j);
+          isNoteOn=true;
         }
         
         i=i+6;
@@ -76,13 +88,14 @@ public class MidiConverter {
       out.play();
       Thread.sleep(8000);
       out.close();
-    } 
+    }
     catch(Exception e)
     {}
-    //int midiFinal = Integer.parseInt(midi);
   }
-  
+  //int midiFinal = Integer.parseInt(midi);
 }
+
+
 
 
 //  public static void main(String[] args)
