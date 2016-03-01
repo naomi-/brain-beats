@@ -1,8 +1,22 @@
+
 /*This converts a bit string into a sequence of midi notes, which it then plays.*/
 
 import java.util.ArrayList;
 
 public class MidiConverter {
+	
+	public static void main(String[] args)
+	{
+		int count = 150;
+		String s = new String();
+		for(int i = 0; i < count*6; ++i)
+		{
+			if(Math.random() >= 0.5)  	s = s + "1";
+			else 						s = s + "0";
+		}
+		
+		convertToMidi(s);
+	}
   
   //This method takes in a binary string and converts it to an array of midi notes
   public static void convertToMidi(String binaryString){
@@ -82,7 +96,7 @@ public class MidiConverter {
       out.setSong(builder.songComplete());
       
       out.play();
-      Thread.sleep(8000);
+      Thread.sleep(10000);
       out.close();
     }
     catch(Exception e)
