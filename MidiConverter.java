@@ -1,8 +1,4 @@
-/*Couldn't figure out how Sequence works...need to look into that more.
- * This converts a bit string into an array of notes that you can play,
- * but it doesn't deal with "rest" or "sustain" yet. 
- * (Probably need to change it so that it uses noteOn and NoteOff) 
- * But it plays a bit string song, so that's fun =) */
+/*This converts a bit string into a sequence of midi notes, which it then plays.*/
 
 import java.util.ArrayList;
 
@@ -64,7 +60,7 @@ public class MidiConverter {
             case "1101": midi = 83;
             break;
             case "1110": midi = 84;
-            break;
+            break; 
             case "1111": midi = 86;
           }
           //turn last note off
@@ -92,37 +88,6 @@ public class MidiConverter {
     catch(Exception e)
     {}
   }
-  //int midiFinal = Integer.parseInt(midi);
 }
 
 
-
-
-//  public static void main(String[] args)
-//  {
-//    try
-//    {
-//      MidiBuilder builder = new MidiBuilder();
-//      
-//      ArrayList<Integer> notes = convertToMidi("110101001111110110110111000000110110110100110110110101");
-//      
-//      for(int i = 0; i < notes.size(); ++i)
-//      {
-//        builder.noteOn(notes.get(i), i*4);
-//        builder.noteOff(notes.get(i), (i+1)*4);
-//      }
-//      
-//      
-//      MidiPlayback out = new MidiPlayback();
-//      out.setSong(builder.songComplete());
-//      
-//      out.play();
-//      Thread.sleep(8000);
-//      
-//      out.close();
-//    }
-//    catch(Exception e)
-//    {}
-//  }
-//  
-//}
