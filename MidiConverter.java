@@ -9,7 +9,7 @@ public class MidiConverter {
 	{
 		int count = 150;
 		String s = new String();
-		for(int i = 0; i < count*6; ++i)
+		for(int i = 0; i < (count*6)+5; ++i)
 		{
 			if(Math.random() >= 0.5)  	s = s + "1";
 			else 						s = s + "0";
@@ -21,15 +21,65 @@ public class MidiConverter {
   //This method takes in a binary string and converts it to an array of midi notes
   public static void convertToMidi(String binaryString){
     try{
+      // key notes for major and minor scales
+      final int[][] midicodes = {
+              {60, 62, 64, 65, 67, 69, 71, 72, 74, 76, 77, 79, 81, 83, 84}, // c  major
+              {60, 62, 63, 65, 67, 68, 70, 72, 74, 75, 77, 79, 80, 82, 84}  // c  minor
+      };
+      
+      // header to scale transformation
+      final int[][] headerToScale = 
+      {
+      //  key, major/minor
+          { 0, 0 },  // C  major
+          { 1, 0 },  // C# major
+          { 2, 0 },  // D  major
+          { 3, 0 },  // D# major
+          { 4, 0 },  // E  major
+          { 5, 0 },  // F  major
+          { 6, 0 },  // F# major
+          { 7, 0 },  // G  major
+          { 8, 0 },  // G# major
+          { 9, 0 },  // A  major
+          {10, 0 },  // A# major
+          {11, 0 },  // B  major
+          { 0, 1 },  // C  minor
+          { 1, 1 },  // C# minor
+          { 2, 1 },  // D  minor
+          { 3, 1 },  // D# minor
+          { 4, 1 },  // E  minor
+          { 5, 1 },  // F  minor
+          { 6, 1 },  // F# minor
+          { 7, 1 },  // G  minor
+          { 8, 1 },  // G# minor
+          { 9, 1 },  // A  minor
+          {10, 1 },  // A# minor
+          {11, 1 },  // B  minor
+          { 0, 0 },  // C  major
+          { 2, 0 },  // D  major
+          { 4, 0 },  // E  major
+          { 5, 0 },  // F  major
+          { 7, 0 },  // G  major
+          { 9, 0 },  // A  major
+          {11, 0 },  // B  major
+          { 0, 0 }
+      };
+      
+      int header = Integer.parseInt(binaryString.substring(0, 5), 2);
+      int keyAdjust = headerToScale[header][0];
+      int majorMinor = headerToScale[header][1];
+    	
       MidiBuilder builder = new MidiBuilder();
       int midi = 0;
       ArrayList<Integer> notes = new ArrayList<Integer>();
-      int i=0; //Counter for iterating through the binary string, six bits at a time
+      int i=5; //Counter for iterating through the binary string, six bits at a time (start after the header)
       int j=0; //Counter for the notes array
       boolean isNoteOn=false;
       
       while(i<binaryString.length()){
         int command = Integer.parseInt(binaryString.substring(i, i+2));
+        int data = Integer.parseInt(binaryString.substring(i+2, i+6), 2);
+        
         System.out.println(command);
         if(command==00 || command==01){
           //Sustain (don't do anything)
@@ -41,44 +91,13 @@ public class MidiConverter {
           }
         }else if(command==11){
           //Play new note
-          String note = binaryString.substring(i+2, i+6);
-          
-          if(note=="1111"){
-          	//Sustain (don't do anything)
-          } else {
-	          //Encode the correct midi note from the bit string
-	          switch(note){
-	            case "0000": midi = 60;
-	            break;
-	            case "0001": midi = 62;
-	            break;
-	            case "0010": midi = 64;
-	            break;
-	            case "0011": midi = 65;
-	            break;
-	            case "0100": midi = 67;
-	            break;
-	            case "0101": midi = 69;
-	            break;
-	            case "0110": midi = 71;
-	            break;
-	            case "0111": midi = 72;
-	            break;
-	            case "1000": midi = 74;
-	            break;
-	            case "1001": midi = 76;
-	            break;
-	            case "1010": midi = 77;
-	            break;
-	            case "1011": midi = 79;
-	            break;
-	            case "1100": midi = 81;
-	            break;
-	            case "1101": midi = 83;
-	            break;
-	            case "1110": midi = 84;
-	            break; 
-	          }
+          // unless data=1111, in which case it's a sustain
+          if(data == 0xF){
+        	// Sustain (don't do anything)
+          }
+          else{
+              midi = midicodes[majorMinor][data] + keyAdjust - 12;
+              
 	          //turn last note off
 	          if(j!=0){
 	            builder.noteOff(notes.get(j-1), j);
@@ -99,7 +118,7 @@ public class MidiConverter {
       out.setSong(builder.songComplete());
       
       out.play();
-      Thread.sleep(10000);
+      Thread.sleep(8000);
       out.close();
     }
     catch(Exception e)
