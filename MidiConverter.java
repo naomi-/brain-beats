@@ -43,47 +43,50 @@ public class MidiConverter {
           //Play new note
           String note = binaryString.substring(i+2, i+6);
           
-          //Encode the correct midi note from the bit string
-          switch(note){
-            case "0000": midi = 60;
-            break;
-            case "0001": midi = 62;
-            break;
-            case "0010": midi = 64;
-            break;
-            case "0011": midi = 65;
-            break;
-            case "0100": midi = 67;
-            break;
-            case "0101": midi = 69;
-            break;
-            case "0110": midi = 71;
-            break;
-            case "0111": midi = 72;
-            break;
-            case "1000": midi = 74;
-            break;
-            case "1001": midi = 76;
-            break;
-            case "1010": midi = 77;
-            break;
-            case "1011": midi = 79;
-            break;
-            case "1100": midi = 81;
-            break;
-            case "1101": midi = 83;
-            break;
-            case "1110": midi = 84;
-            break; 
-            case "1111": midi = 86;
+          if(note=="1111"){
+          	//Sustain (don't do anything)
+          } else {
+	          //Encode the correct midi note from the bit string
+	          switch(note){
+	            case "0000": midi = 60;
+	            break;
+	            case "0001": midi = 62;
+	            break;
+	            case "0010": midi = 64;
+	            break;
+	            case "0011": midi = 65;
+	            break;
+	            case "0100": midi = 67;
+	            break;
+	            case "0101": midi = 69;
+	            break;
+	            case "0110": midi = 71;
+	            break;
+	            case "0111": midi = 72;
+	            break;
+	            case "1000": midi = 74;
+	            break;
+	            case "1001": midi = 76;
+	            break;
+	            case "1010": midi = 77;
+	            break;
+	            case "1011": midi = 79;
+	            break;
+	            case "1100": midi = 81;
+	            break;
+	            case "1101": midi = 83;
+	            break;
+	            case "1110": midi = 84;
+	            break; 
+	          }
+	          //turn last note off
+	          if(j!=0){
+	            builder.noteOff(notes.get(j-1), j);
+	          }
+	          //turn new note on
+	          builder.noteOn(midi, j);
+	          isNoteOn=true;
           }
-          //turn last note off
-          if(j!=0){
-            builder.noteOff(notes.get(j-1), j);
-          }
-          //turn new note on
-          builder.noteOn(midi, j);
-          isNoteOn=true;
         }
         
         i=i+6;
