@@ -7,7 +7,7 @@ public class MidiConverter {
 	
 	public static void main(String[] args)
 	{
-		int count = 150;
+		int count = 80;
 		String s = new String();
 		for(int i = 0; i < (count*6)+5; ++i)
 		{
@@ -118,7 +118,8 @@ public class MidiConverter {
       out.setSong(builder.songComplete());
       
       out.play();
-      Thread.sleep(8000);
+      while(out.isPlaying())
+          Thread.sleep(100);
       out.close();
     }
     catch(Exception e)
