@@ -23,7 +23,7 @@ public class CSVParse {
 	    String[] touching=line.split(",");
 	    String[] waves=line2.split(",");
 
-	    for(int i=2;i<6;i++) {
+	    for(int i=4;i<6;i++) {
 		if(touching[i].indexOf("1")>=0) {
 		    sum+=Double.parseDouble(waves[i]);
 		    count++;
@@ -37,12 +37,13 @@ public class CSVParse {
  
 
     public static void main(String[] args) {
-	try {
+	/*try {
 	    CSVParse obj=new CSVParse("/home/cammat13/Projects/data.csv");
 	    System.out.println(obj.parse());
 	}
 	catch (Exception e) {
 	    System.out.println(e);
 	}
+	*/
     }
 }
