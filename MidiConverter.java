@@ -4,19 +4,19 @@
 import java.util.ArrayList;
 
 public class MidiConverter {
-	
-	public static void main(String[] args)
-	{
-		int count = 80;
-		String s = new String();
-		for(int i = 0; i < (count*6)+5; ++i)
-		{
-			if(Math.random() >= 0.5)  	s = s + "1";
-			else 						s = s + "0";
-		}
-		
-		convertToMidi(s);
-	}
+ 
+ public static void main(String[] args)
+ {
+  int count = 80;
+  String s = new String();
+  for(int i = 0; i < (count*6)+5; ++i)
+  {
+   if(Math.random() >= 0.5)   s = s + "1";
+   else       s = s + "0";
+  }
+  
+  convertToMidi(s);
+ }
   
   //This method takes in a binary string and converts it to an array of midi notes
   public static void convertToMidi(String binaryString){
@@ -68,7 +68,7 @@ public class MidiConverter {
       int header = Integer.parseInt(binaryString.substring(0, 5), 2);
       int keyAdjust = headerToScale[header][0];
       int majorMinor = headerToScale[header][1];
-    	
+     
       MidiBuilder builder = new MidiBuilder();
       int midi = 0;
       ArrayList<Integer> notes = new ArrayList<Integer>();
@@ -80,7 +80,7 @@ public class MidiConverter {
         int command = Integer.parseInt(binaryString.substring(i, i+2));
         int data = Integer.parseInt(binaryString.substring(i+2, i+6), 2);
         
-        System.out.println(command);
+        //System.out.println(command);
         if(command==00 || command==01){
           //Sustain (don't do anything)
         }else if(command==10){
@@ -93,18 +93,18 @@ public class MidiConverter {
           //Play new note
           // unless data=1111, in which case it's a sustain
           if(data == 0xF){
-        	// Sustain (don't do anything)
+         // Sustain (don't do anything)
           }
           else{
               midi = midicodes[majorMinor][data] + keyAdjust - 12;
               
-	          //turn last note off
-	          if(j!=0){
-	            builder.noteOff(notes.get(j-1), j);
-	          }
-	          //turn new note on
-	          builder.noteOn(midi, j);
-	          isNoteOn=true;
+           //turn last note off
+           if(j!=0){
+             builder.noteOff(notes.get(j-1), j);
+           }
+           //turn new note on
+           builder.noteOn(midi, j);
+           isNoteOn=true;
           }
         }
         
@@ -112,7 +112,7 @@ public class MidiConverter {
         j++;
         notes.add(midi);
         //Store note into notes array
-        System.out.println(notes);
+        //System.out.println(notes);
       }
       MidiPlayback out = new MidiPlayback();
       out.setSong(builder.songComplete());
