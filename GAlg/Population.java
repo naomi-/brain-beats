@@ -4,6 +4,7 @@
  */
 
 package ga;
+import java.io.*;
 
 public class Population extends GAlg{
     Individual[] pop;
@@ -21,6 +22,11 @@ public class Population extends GAlg{
 	    this.pop[i]=new Individual();
 	}
 	this.gen=0;
+    }
+
+    Population (String filePath) throws Exception {
+	this.pop=new Individual[popSize];
+	loadFromCsv(filePath);
     }
     
     Population (Individual[] newPop,Population oldGen) {
@@ -70,5 +76,39 @@ public class Population extends GAlg{
     
     public void setPSelect(int i,double x) {
 	this.pop[i].pSelect=x;
+    }
+
+    //static methods
+
+    //save data in a csv file
+    //only saves gen and bna strings
+    public void writeToCsv(String fileName) throws Exception {
+	FileWriter writer=new FileWriter(fileName);
+
+	writer.append(Integer.toString(this.gen));
+	writer.append('\n');
+
+	for(int i=0;i<popSize;i++) {
+	    writer.append(getBna(i));
+	    writer.append('\n');
+	}
+	writer.close();
+    }
+
+    //loads data from a csv file
+    //should be called from constructor only
+    public void loadFromCsv(String filePath) throws Exception {
+	BufferedReader br=new BufferedReader(new FileReader(filePath));
+	String line="";
+	int i=0;
+
+	line=br.readLine();
+	this.gen=Integer.parseInt(line);
+	
+	while((line=br.readLine()) != null) {
+	    this.setBna(i,line);
+	    i++;
+	}
+	br.close();
     }
 }//end class Population
