@@ -7,6 +7,11 @@ public class MidiConverter {
  
  public static void main(String[] args)
  {
+   generateAudio();
+ }
+ 
+ public static void generateAudio()
+ {
   int count = 80;
   String s = new String();
   for(int i = 0; i < (count*6)+5; ++i)
