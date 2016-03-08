@@ -6,21 +6,14 @@
  *  |___/   _|_|_  \__,_|   _|_|_  |_||_|   _____   |___/   \___|  \__,_|   _\__|   /__/_  
  * _|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|     |_|"""""|_|"""""|_|"""""|_|"""""|_|"""""| 
  * "`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-' 
-*/
+ */
 
-import javax.swing.*; 
-import java.awt.*; 
-
-public static void main(String[] args) {
-
-  public void gui(){
-  JFrame frame = new JFrame();
-  frame.setTitle("Brain-Beats");
-  frame.setDefaultCloseOperation(JFRAME.EXIT_ON_CLOSE);
-  frame.setVisible(true); 
+public class brainbeats(){
   
-  
+  public static void main(String[] args) {
+    
+    new brainbeats();
+    
     
   }
-  
 }
