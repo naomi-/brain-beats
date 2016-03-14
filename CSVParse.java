@@ -9,41 +9,43 @@ public class CSVParse {
     private CSVParse() {}
 
     public CSVParse(String file_path) throws Exception {
-	path=file_path;
-	br= new BufferedReader(new FileReader(path));
+ path = file_path;
+ br = new BufferedReader(new FileReader(path));
+ System.out.println("parser created");
     }
 
     public double parse() throws Exception {
-	String line= "",line2= "";
-	double sum=0.0;
-	int count=0;
+ String line= "",line2= "";
+ double sum=0.0;
+ int count=0;
 
-	while ((line=br.readLine()) != null) {
-	    line2=br.readLine();
-	    String[] touching=line.split(",");
-	    String[] waves=line2.split(",");
+ while ((line=br.readLine()) != null) {
+     //line = br.readLine();
+   line2=br.readLine();
+     String[] touching=line.split(",");
+     String[] waves=line2.split(",");
 
-	    for(int i=4;i<6;i++) {
-		if(touching[i].indexOf("1")>=0) {
-		    sum+=Double.parseDouble(waves[i]);
-		    count++;
-		}
-	    }
-	}
-	if (count==0) throw new RuntimeException("No data in file");
+     for(int i=4;i<6;i++) {
+  if(touching[i].indexOf("1")>=0) {
+      sum+=Double.parseDouble(waves[i]);
+      count++;
+  }
+     }
+ }
+ if (count==0) throw new RuntimeException("No data in file");
 
-	return (sum/count);	
+ return (sum/count); 
     }
  
 
     public static void main(String[] args) {
-	/*try {
-	    CSVParse obj=new CSVParse("/home/cammat13/Projects/data.csv");
-	    System.out.println(obj.parse());
-	}
-	catch (Exception e) {
-	    System.out.println(e);
-	}
-	*/
+ /*try {
+     CSVParse obj=new CSVParse("/home/cammat13/Projects/data.csv");
+     System.out.println(obj.parse());
+ }
+ catch (Exception e) {
+     System.out.println(e);
+ }
+ */
     }
 }

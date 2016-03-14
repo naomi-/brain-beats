@@ -10,7 +10,7 @@ public class MidiConverter {
    generateAudio();
  }
  
- public static void generateAudio()
+ public static String generateAudio()
  {
   int count = 80;
   String s = new String();
@@ -18,9 +18,12 @@ public class MidiConverter {
   {
    if(Math.random() >= 0.5)   s = s + "1";
    else       s = s + "0";
+   
+   
   }
   
   convertToMidi(s);
+  return s;
  }
   
   //This method takes in a binary string and converts it to an array of midi notes
